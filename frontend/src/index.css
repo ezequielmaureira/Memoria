@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.font-serif {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+/* Ajustes mínimos para que Leaflet se vea bien dentro de tarjetas con
+   bordes redondeados. */
+.leaflet-container {
+  border-radius: 0.75rem;
+  font-family: "Inter", system-ui, sans-serif;
+}

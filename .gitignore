@@ -1,0 +1,33 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno (nunca versionar secretos reales)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+!.env.example
+
+# Builds
+dist/
+build/
+frontend/dist/
+backend/dist/
+
+# Archivos subidos en desarrollo (driver de storage local)
+backend/uploads/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archivos temporales / SO
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
