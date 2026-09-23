@@ -1,0 +1,8 @@
+# Nunca enviar secretos ni artefactos locales al build remoto.
+.env
+.env.*
+!.env.example
+node_modules
+uploads
+*.log
+.tmp-*

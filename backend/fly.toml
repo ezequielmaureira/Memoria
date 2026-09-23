@@ -1,0 +1,35 @@
+# Configuración de Fly.io para el backend de MEMORIA.
+# Secrets (fly secrets set): DATABASE_URL. Más adelante: FRONTEND_URL, CLERK_*.
+
+app = "memoria-sv6zkw"
+primary_region = "gru"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[deploy]
+  # Aplica migraciones pendientes antes de cada release. Nunca hace reset.
+  release_command = "npx prisma migrate deploy"
+
+[env]
+  PORT = "8080"
+  STORAGE_DRIVER = "local"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    grace_period = "15s"
+    interval = "30s"
+    method = "GET"
+    path = "/api/health"
+    timeout = "5s"
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
