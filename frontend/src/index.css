@@ -4,10 +4,13 @@
 
 html {
   scroll-behavior: smooth;
+  /* Deja lugar para la navbar fija al saltar a un #ancla. */
+  scroll-padding-top: 7rem;
 }
 
 body {
   font-family: "Inter", system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 .font-serif {
@@ -19,4 +22,98 @@ body {
 .leaflet-container {
   border-radius: 0.75rem;
   font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Marcador propio del mapa (ver MapView.jsx). */
+.memoria-marker {
+  display: block;
+  width: 34px;
+  height: 42px;
+  position: relative;
+  cursor: pointer;
+}
+.memoria-marker::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: #1c1a17;
+  border: 3px solid #f5f0e6;
+  box-shadow: 0 3px 8px rgba(28, 26, 23, 0.35);
+  transition: background 0.15s, transform 0.15s;
+}
+.memoria-marker > span {
+  position: absolute;
+  left: 13px;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f5f0e6;
+}
+.memoria-marker.is-active::before,
+.memoria-marker:hover::before {
+  background: #a3572f;
+  transform: rotate(-45deg) scale(1.15);
+}
+
+/* Textura de papel sutil para las páginas del álbum. */
+.paper {
+  background-color: #fbf7ef;
+  background-image: radial-gradient(rgba(107, 86, 67, 0.05) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+/* Composición "libro abierto" de la página de lugar.
+   Mobile: foto → información → timeline → comentarios.
+   Desktop: dos páginas (foto | información + comentarios) y el timeline
+   debajo, a lo ancho. */
+.book {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "photo"
+    "info"
+    "timeline"
+    "comments";
+}
+.book-photo { grid-area: photo; }
+.book-info { grid-area: info; }
+.book-timeline { grid-area: timeline; }
+.book-comments { grid-area: comments; }
+
+@media (min-width: 1024px) {
+  .book {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "photo info"
+      "photo comments"
+      "timeline timeline";
+  }
+  /* Lomo del libro: sombras hacia el centro en ambas páginas. */
+  .book-photo {
+    box-shadow: inset -18px 0 24px -18px rgba(28, 26, 23, 0.28);
+    border-right: 1px solid rgba(107, 86, 67, 0.18);
+  }
+  .book-info,
+  .book-comments {
+    box-shadow: inset 18px 0 24px -18px rgba(28, 26, 23, 0.2);
+  }
+}
+
+@keyframes memoria-fade {
+  from { opacity: 0; transform: scale(1.01); }
+  to { opacity: 1; transform: scale(1); }
+}
+.fade-in {
+  animation: memoria-fade 0.35s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fade-in { animation: none; }
 }

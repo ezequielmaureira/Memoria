@@ -14,7 +14,9 @@ export function errorHandler(err, req, res, _next) {
   if (status === 500) {
     console.error(err);
   }
+  // Los errores 500 (p. ej. base de datos caída) se loguean completos pero
+  // no se exponen al cliente.
   res.status(status).json({
-    error: err.message || "Error interno del servidor",
+    error: status === 500 ? "Error interno del servidor" : err.message,
   });
 }

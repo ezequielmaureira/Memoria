@@ -1,5 +1,8 @@
 import "dotenv/config";
 import express from "express";
+// Express 4 no captura errores de handlers async: sin esto, un fallo de la
+// base de datos deja la request colgada o tira abajo el proceso.
+import "express-async-errors";
 import cors from "cors";
 import path from "node:path";
 

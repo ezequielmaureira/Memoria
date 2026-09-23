@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 
 // Hook mínimo para llamadas GET con estados loading/error/data.
 // deps controla cuándo se vuelve a ejecutar el fetcher.
+// errorStatus distingue un 404 (recurso inexistente) de un fallo de API
+// (0 = sin conexión con el backend).
 export function useFetch(fetcher, deps = []) {
-  const [state, setState] = useState({ data: null, loading: true, error: null });
+  const [state, setState] = useState({ data: null, loading: true, error: null, errorStatus: null });
 
   useEffect(() => {
     let cancelled = false;
-    setState({ data: null, loading: true, error: null });
+    setState({ data: null, loading: true, error: null, errorStatus: null });
 
     fetcher()
       .then((data) => {
-        if (!cancelled) setState({ data, loading: false, error: null });
+        if (!cancelled) setState({ data, loading: false, error: null, errorStatus: null });
       })
       .catch((error) => {
-        if (!cancelled) setState({ data: null, loading: false, error: error.message });
+        if (!cancelled)
+          setState({ data: null, loading: false, error: error.message, errorStatus: error.status ?? null });
       });
 
     return () => {

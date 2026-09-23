@@ -17,7 +17,14 @@ placesRouter.get("/city/:citySlug/place/:placeSlug", async (req, res, next) => {
   });
   if (!place) return next(new ApiError(404, "Lugar no encontrado"));
 
-  res.json({ ...place, city });
+  // Fuentes disponibles para la sección "Historia de este lugar".
+  const [photos, comments, contributions] = await Promise.all([
+    prisma.photo.count({ where: { placeId: place.id, status: "PUBLISHED" } }),
+    prisma.comment.count({ where: { photo: { placeId: place.id, status: "PUBLISHED" } } }),
+    prisma.contribution.count({ where: { photo: { placeId: place.id, status: "PUBLISHED" } } }),
+  ]);
+
+  res.json({ ...place, city, stats: { photos, comments, contributions } });
 });
 
 placesRouter.get("/:id", async (req, res, next) => {

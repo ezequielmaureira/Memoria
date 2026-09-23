@@ -5,15 +5,25 @@ async function request(path, { method = "GET", body, token, isFormData } = {}) {
   if (!isFormData) headers["Content-Type"] = "application/json";
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const res = await fetch(`${API_URL}${path}`, {
-    method,
-    headers,
-    body: isFormData ? body : body ? JSON.stringify(body) : undefined,
-  });
+  let res;
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      method,
+      headers,
+      body: isFormData ? body : body ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    // fetch solo falla así cuando no hay conexión con el backend.
+    const error = new Error("No pudimos conectar con el servidor de MEMORIA.");
+    error.status = 0;
+    throw error;
+  }
 
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || `Error ${res.status}`);
+    const error = new Error(data.error || `Error ${res.status}`);
+    error.status = res.status;
+    throw error;
   }
 
   if (res.status === 204) return null;

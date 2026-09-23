@@ -55,8 +55,11 @@ export function AuthAction() {
   const { isConfigured } = useAppAuth();
   if (!isConfigured) {
     return (
-      <span className="text-xs text-earth" title="Configurá VITE_CLERK_PUBLISHABLE_KEY para habilitar el login">
-        Login no configurado
+      <span
+        className="rounded-full border border-earth/20 px-3 py-1.5 text-xs text-earth"
+        title="Configurá VITE_CLERK_PUBLISHABLE_KEY para habilitar el login"
+      >
+        Modo exploración
       </span>
     );
   }
@@ -72,7 +75,7 @@ function SignInButtonSlot() {
   if (isSignedIn) return <UserButton afterSignOutUrl="/" />;
   return (
     <SignInButton mode="modal">
-      <button className="rounded-full bg-carbon px-4 py-2 text-sm font-medium text-bone hover:bg-earth transition-colors">
+      <button className="min-h-[40px] rounded-full bg-carbon px-4 text-sm font-medium text-bone hover:bg-earth transition-colors">
         Iniciar sesión
       </button>
     </SignInButton>
