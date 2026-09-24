@@ -1,5 +1,6 @@
 # Configuración de Fly.io para el backend de MEMORIA.
-# Secrets (fly secrets set): DATABASE_URL. Más adelante: FRONTEND_URL, CLERK_*.
+# Secrets (fly secrets set): DATABASE_URL, FRONTEND_URL, CLERK_SECRET_KEY,
+# CLERK_PUBLISHABLE_KEY.
 
 app = "memoria-sv6zkw"
 primary_region = "gru"
